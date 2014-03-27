@@ -1,0 +1,12 @@
+# to install all requirements please run:
+# pip install -r requirements.txt
+
+Django >= 1.6
+# Math engine
+sympy >= 0.7
+# Rest API framework
+django-tastypie >= 0.11
+
+# Useful tools for development
+ipython
+ipdb

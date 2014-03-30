@@ -23,3 +23,11 @@ class EquationTestCase(TestCase):
         equation = Equation.objects.create(equation=exp)
         self.assertIn(u'invalid syntax', equation.result)
         self.assertFalse(equation.valid)
+
+    def test_session_in_equation(self):
+        """
+        Test if there's a session in the equation
+        """
+        equation = Equation.objects.create(equation="1+1")
+        self.assertEqual(equation.session.name, "")
+        self.assertEqual(equation.session.user, None)

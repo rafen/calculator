@@ -8,7 +8,7 @@ class SessionAdmin(admin.ModelAdmin):
 
 
 class EquationAdmin(admin.ModelAdmin):
-    list_display = ['command', 'result']
+    list_display = ['equation', 'result']
 
 
 admin.site.register(Session, SessionAdmin)

@@ -26,8 +26,9 @@ class Equation(models.Model):
 
     def save(self, *args, **kwargs):
         # create session if needed
-        session = Session.objects.create(name="")
-        self.session = session
+        if not hasattr(self, 'session'):
+            session = Session.objects.create(name="")
+            self.session = session
         # Calculate result
         try:
             self.result = solve(self.equation)

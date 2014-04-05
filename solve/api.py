@@ -18,7 +18,6 @@ class SessionResource(ModelResource):
         list_allowed_methods = ['post']
         include_resource_uri = False
         always_return_data = True
-        authentication = MultiAuthentication(BasicAuthentication(), SessionAuthentication())
         authorization = DjangoAuthorization()
         filtering = {
             "name": ALL_WITH_RELATIONS,
@@ -38,7 +37,7 @@ class CalculatorResource(ModelResource):
     """
     Simple resource to manage the Equation model
     """
-    session = fields.ForeignKey(SessionResource, 'session')
+    session = fields.ForeignKey(SessionResource, 'session', blank=True)
 
     class Meta:
         queryset = Equation.objects.all()
@@ -51,7 +50,6 @@ class CalculatorResource(ModelResource):
             "valid": ALL_WITH_RELATIONS,
         }
         # authentication
-        authentication = MultiAuthentication(BasicAuthentication(), SessionAuthentication())
         authorization = DjangoAuthorization()
 
     def obj_create(self, bundle, **kwargs):
@@ -61,3 +59,7 @@ class CalculatorResource(ModelResource):
             res.obj.session.save()
         return res
 
+    def get_object_list(self, request):
+        res = super(CalculatorResource, self).get_object_list(request)
+        # A user can only get the his own list of equations
+        return res.filter(session__user=request.user)
